@@ -45,9 +45,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\BadAPIKeyException.cs" />
+    <Compile Include="Exceptions\BadResourceException.cs" />
     <Compile Include="Exceptions\XboxAPIKeyNotSetException.cs" />
     <Compile Include="Objects\AccountXuid.cs" />
+    <Compile Include="Objects\Conversation.cs" />
+    <Compile Include="Objects\Gamercard.cs" />
     <Compile Include="Objects\Message.cs" />
+    <Compile Include="Objects\AccountProfile.cs" />
+    <Compile Include="Objects\Presence.cs" />
     <Compile Include="Objects\Profile.cs" />
     <Compile Include="XAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -19,5 +19,12 @@ namespace XboxAPI.Objects
             GamerTag1 = json.SelectToken("gamerTag")?.ToString();
             GamerTag2 = json.SelectToken("gamertag")?.ToString();
         }
+
+        public AccountXuid(string xuid, string gt)
+        {
+            XUID = xuid;
+            GamerTag1 = gt;
+            GamerTag2 = gt;
+        }
     }
 }

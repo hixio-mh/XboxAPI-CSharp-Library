@@ -18,9 +18,9 @@ namespace XboxAPI
             xboxAPIKey = key;
         }
 
-        public async static Task<Objects.Profile> GetMyProfile()
+        public async static Task<Objects.AccountProfile> GetMyAccountProfile()
         {
-            return new Objects.Profile(JObject.Parse(await MakeGetRequest("https://xboxapi.com/v2/profile")));
+            return new Objects.AccountProfile(JObject.Parse(await MakeGetRequest("https://xboxapi.com/v2/profile")));
         }
 
         public async static Task<Objects.AccountXuid> GetMyAccountXuid()
@@ -31,11 +31,44 @@ namespace XboxAPI
         public async static Task<List<Objects.Message>> GetMyMessages()
         {
             List<Objects.Message> messages = new List<Objects.Message>();
-            string resp = await MakeGetRequest("https://xboxapi.com/v2/messages");
-            JToken json = JArray.Parse(resp);
+            JToken json = JArray.Parse(await MakeGetRequest("https://xboxapi.com/v2/messages"));
             foreach(JToken message in json)
                 messages.Add(new Objects.Message(message));
             return messages;
+        }
+
+        public async static Task<List<Objects.Conversation>> GetMyConversations()
+        {
+            List<Objects.Conversation> conversations = new List<Objects.Conversation>();
+            JToken json = JArray.Parse(await MakeGetRequest("https://xboxapi.com/v2/conversations"));
+            foreach (JToken conversation in json)
+                conversations.Add(new Objects.Conversation(conversation));
+            return conversations;
+        }
+
+        public async static Task<Objects.AccountXuid> GetXuidFromGamertag(string gamertag)
+        {
+            return new Objects.AccountXuid(await MakeGetRequest($"https://xboxapi.com/v2/xuid/{gamertag}"), gamertag);
+        }
+
+        public async static Task<string> GetGamertagFromXuid(string xuid)
+        {
+            return await MakeGetRequest($"https://xboxapi.com/v2/gamertag/{xuid}");
+        }
+
+        public async static Task<Objects.Profile> GetProfileFromXuid(string xuid)
+        {
+            return new Objects.Profile(JObject.Parse(await MakeGetRequest($"https://xboxapi.com/v2/{xuid}/profile")));
+        }
+
+        public async static Task<Objects.Gamercard> GetGamercardFromXuid(string xuid)
+        {
+            return new Objects.Gamercard(JObject.Parse(await MakeGetRequest($"https://xboxapi.com/v2/{xuid}/gamercard")));
+        }
+
+        public async static Task<Objects.Presence> GetPresenceFromXuid(string xuid)
+        {
+            return new Objects.Presence(JObject.Parse(await MakeGetRequest($"https://xboxapi.com/v2/{xuid}/presence")));
         }
 
         #region Internals
@@ -98,6 +131,8 @@ namespace XboxAPI
             {
                 case HttpStatusCode.Unauthorized:
                     throw new Exceptions.BadAPIKeyException(xboxAPIKey);
+                case HttpStatusCode.NotFound:
+                    throw new Exceptions.BadResourceException();
                 default:
                     throw e;
             }

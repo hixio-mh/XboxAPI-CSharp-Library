@@ -9,77 +9,36 @@ namespace XboxAPI.Objects
 {
     public class Profile
     {
-        public string UserKey { get; protected set; }
-        public List<string> AdministeredConsoles { get; protected set; }
-        public string DateOfBirth { get; protected set; }
-        public string Email { get; protected set; }
-        public string FirstName { get; protected set; }
+        public string Id { get; protected set; }
+        public string HostId { get; protected set; }
         public string GamerTag { get; protected set; }
-        public HomeAddressInfoObj HomeAddressInfo { get; protected set; }
-        public string HomeConsole { get; protected set; }
-        public string ImageUrl { get; protected set; }
-        public bool IsAdult { get; protected set; }
-        public string LastName { get; protected set; }
-        public string LegalCountry { get; protected set; }
-        public string Locale { get; protected set; }
-        public bool MsftOptin { get; protected set; }
-        public string OwnerHash { get; protected set; }
-        public string OwnerXuid { get; protected set; }
-        public string MidasConsole { get; protected set; }
-        public bool PartnerOptIn { get; protected set; }
-        public string UserHash { get; protected set; }
-        public string UserXuid { get; protected set; }
-        public string ToUAcceptanceDate { get; protected set; }
-        public string GamerTagChangeReason { get; protected set; }
+        public string GameDisplayName { get; protected set; }
+        public string AppDisplayName { get; protected set; }
+        public int Gamerscore { get; protected set; }
+        public string GameDisplayPicRaw { get; protected set; }
+        public string AppDisplayPicRaw { get; protected set; }
+        public string AccountTier { get; protected set; }
+        public string XboxOneRep { get; protected set; }
+        public string PreferredColor { get; protected set; }
+        public int TenureLevel { get; protected set; }
+        public bool IsSponsoredUser { get; protected set; }
 
         public Profile(JToken json)
         {
-            bool isAdult, msftOptIn, partnerOptin;
-
-            UserKey = json.SelectToken("userKey")?.ToString();
-            if (json.SelectToken("administeredConsoles") != null)
-                foreach (JToken console in json.SelectToken("administeredConsoles"))
-                    AdministeredConsoles.Add(console.ToString());
-            DateOfBirth = json.SelectToken("dateOfBirth")?.ToString();
-            Email = json.SelectToken("email")?.ToString();
-            FirstName = json.SelectToken("firstName")?.ToString();
-            GamerTag = json.SelectToken("gamerTag")?.ToString();
-            if (json.SelectToken("homeAddressInfo") != null)
-                HomeAddressInfo = new HomeAddressInfoObj(json.SelectToken("homeAddressInfo"));
-            HomeConsole = json.SelectToken("homeConsole")?.ToString();
-            ImageUrl = json.SelectToken("homeUrl")?.ToString();
-            IsAdult = bool.TryParse(json.SelectToken("isAdult").ToString(), out isAdult) && isAdult;
-            LastName = json.SelectToken("lastName")?.ToString();
-            LegalCountry = json.SelectToken("legalCountry")?.ToString();
-            Locale = json.SelectToken("locale")?.ToString();
-            MsftOptin = bool.TryParse(json.SelectToken("msftOptin").ToString(), out msftOptIn) && msftOptIn;
-            OwnerHash = json.SelectToken("ownerHash")?.ToString();
-            OwnerXuid = json.SelectToken("ownerXuid")?.ToString();
-            MidasConsole = json.SelectToken("midasConsole")?.ToString();
-            PartnerOptIn = bool.TryParse(json.SelectToken("partnerOptin").ToString(), out partnerOptin) && partnerOptin;
-            UserHash = json.SelectToken("userHash")?.ToString();
-            UserXuid = json.SelectToken("userXuid")?.ToString();
-            ToUAcceptanceDate = json.SelectToken("touAcceptanceDate")?.ToString();
-            GamerTagChangeReason = json.SelectToken("gamerTagChangeReason")?.ToString();
-        }
-
-        public class HomeAddressInfoObj
-        {
-            public string Street1 { get; protected set; }
-            public string Street2 { get; protected set; }
-            public string City { get; protected set; }
-            public string State { get; protected set; }
-            public string PostalCode { get; protected set; }
-            public string Country { get; protected set; }
-
-            public HomeAddressInfoObj(JToken json)
-            {
-                Street1 = json.SelectToken("street1")?.ToString();
-                Street2 = json.SelectToken("street2")?.ToString();
-                City = json.SelectToken("city")?.ToString();
-                State = json.SelectToken("state")?.ToString();
-                Country = json.SelectToken("country")?.ToString();
-            }
+            bool isSponsoredUser;
+            Id = json.SelectToken("id")?.ToString();
+            HostId = json.SelectToken("hostId")?.ToString();
+            GamerTag = json.SelectToken("Gamertag")?.ToString();
+            GameDisplayName = json.SelectToken("GameDisplayName")?.ToString();
+            AppDisplayName = json.SelectToken("AppDisplayName")?.ToString();
+            Gamerscore = int.Parse(json.SelectToken("Gamerscore").ToString());
+            GameDisplayPicRaw = json.SelectToken("GameDisplayPicRaw")?.ToString();
+            AppDisplayPicRaw = json.SelectToken("AppDisplayPicRaw")?.ToString();
+            AccountTier = json.SelectToken("AccountTier")?.ToString();
+            XboxOneRep = json.SelectToken("XboxOneRep")?.ToString();
+            PreferredColor = json.SelectToken("PreferredColor")?.ToString();
+            TenureLevel = int.Parse(json.SelectToken("TenureLevel").ToString());
+            IsSponsoredUser = bool.TryParse(json.SelectToken("isSponsoredUser")?.ToString(), out isSponsoredUser) && isSponsoredUser;
         }
     }
 }
